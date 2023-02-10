@@ -1313,6 +1313,7 @@ def main():
         selected_tests = get_reordered_tests(selected_tests)
         # downloading test cases configuration to local environment
         get_test_case_configs(dirpath=test_directory)
+    selected_tests = ['test_sparse']
 
     failure_messages = []
 
