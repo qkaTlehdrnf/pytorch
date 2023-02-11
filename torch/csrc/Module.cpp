@@ -991,6 +991,27 @@ static PyObject* THPModule_are_vmap_fallback_warnings_enabled(
   END_HANDLE_TH_ERRORS
 }
 
+PyObject* THPModule_setTransparentHugePagesEnabled(
+    PyObject* _unused,
+    PyObject* arg) {
+  THPUtils_assert(
+      PyBool_Check(arg),
+      "set_transparent_hugepages_enabled expects a bool, "
+      "but got %s",
+      THPUtils_typename(arg));
+  at::globalContext().setTransparentHugePagesEnabled(arg == Py_True);
+  Py_RETURN_NONE;
+}
+
+PyObject* THPModule_getTransparentHugePagesEnabled(
+    PyObject* _unused,
+    PyObject* noargs) {
+  if (at::globalContext().getTransparentHugePagesEnabled()) {
+    Py_RETURN_TRUE;
+  }
+  Py_RETURN_FALSE;
+}
+
 // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays,
 // cppcoreguidelines-avoid-non-const-global-variables, modernize-avoid-c-arrays)
 static PyMethodDef TorchMethods[] = {
@@ -1193,6 +1214,14 @@ static PyMethodDef TorchMethods[] = {
     {"_has_torch_function_variadic",
      (PyCFunction)(void (*)(void))THPModule_has_torch_function_variadic,
      METH_FASTCALL,
+     nullptr},
+    {"_get_transparent_hugepages_enabled",
+     THPModule_getTransparentHugePagesEnabled,
+     METH_NOARGS,
+     nullptr},
+    {"_set_transparent_hugepages_enabled",
+     THPModule_setTransparentHugePagesEnabled,
+     METH_O,
      nullptr},
     {nullptr, nullptr, 0, nullptr}};
 

@@ -381,6 +381,14 @@ bool Context::setFlushDenormal(bool on) {
   return at::cpu::set_flush_denormal(on);
 }
 
+bool Context::getTransparentHugePagesEnabled() const {
+  return transparent_hugepages_enabled;
+}
+
+void Context::setTransparentHugePagesEnabled(bool b) {
+  transparent_hugepages_enabled = b;
+}
+
 Allocator* getCPUAllocator() {
   return c10::GetCPUAllocator();
 }

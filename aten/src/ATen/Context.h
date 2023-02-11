@@ -264,6 +264,9 @@ class TORCH_API Context {
   void setDefaultMobileCPUAllocator();
   void unsetDefaultMobileCPUAllocator();
 
+  bool getTransparentHugePagesEnabled() const;
+  void setTransparentHugePagesEnabled(bool);
+
  private:
   void initCUDAIfNeeded(DeviceType p) {
     if (p == DeviceType::CUDA) {
@@ -308,6 +311,7 @@ class TORCH_API Context {
   bool display_vmap_fallback_warnings_ = false;
   c10::optional<at::QEngine> quantized_engine = c10::nullopt;
   bool enable_sparse_tensor_invariant_checks = false;
+  bool transparent_hugepages_enabled = false;
 
   Allocator* prev_allocator_ptr_{nullptr};
 };
